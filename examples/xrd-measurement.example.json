@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "sciphysdata.v0",
+  "sample": {
+    "sampleId": "sample-public-zno-001",
+    "displayName": "ZnO demo sample",
+    "materialSystem": "Zn-O",
+    "composition": "ZnO"
+  },
+  "project": {
+    "projectId": "public-demo",
+    "name": "Public XRD demo"
+  },
+  "instrument": {
+    "modality": "xrd",
+    "vendor": "demo",
+    "model": "synthetic",
+    "radiation": "Cu K alpha",
+    "wavelengthAngstrom": 1.5406
+  },
+  "measurement": {
+    "measurementId": "xrd-public-zno-001",
+    "modality": "xrd",
+    "measuredAt": "2026-06-21T00:00:00Z",
+    "file": {
+      "name": "zno.xy",
+      "format": "xy"
+    },
+    "settings": {
+      "twoThetaStart": 20,
+      "twoThetaEnd": 80,
+      "stepSize": 0.02
+    }
+  },
+  "analysis": {
+    "analysisId": "analysis-zno-001",
+    "engine": "sciphys-os",
+    "engineVersion": "0.1.0",
+    "createdAt": "2026-06-21T00:00:00Z",
+    "summary": "Primary phase candidate is wurtzite ZnO.",
+    "evidence": [
+      {
+        "kind": "xrd_phase_match",
+        "claim": "ZnO wurtzite matches the strongest reference peaks.",
+        "confidence": 0.92,
+        "supportingData": {
+          "matchedPeaks": [31.77, 34.42, 36.25],
+          "unmatchedPeaks": []
+        }
+      }
+    ]
+  },
+  "expertFeedback": [
+    {
+      "feedbackId": "feedback-demo-001",
+      "decision": "accept",
+      "comment": "Synthetic demo case."
+    }
+  ],
+  "provenance": {
+    "createdAt": "2026-06-21T00:00:00Z",
+    "source": "synthetic-example",
+    "privacyLevel": "public"
+  }
+}
