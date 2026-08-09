@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""Dependency-free checks for schemas and examples."""
+"""Validate SciPhys examples against their JSON Schemas and graph invariants."""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
+
+try:
+    from jsonschema import Draft202012Validator, FormatChecker
+except ImportError as error:
+    raise SystemExit("Install validation dependencies with: python -m pip install -r requirements-dev.txt") from error
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +32,7 @@ for path in (ROOT / "schemas").glob("*.json"):
             errors.append(f"{path.relative_to(ROOT)}: missing $id or $schema")
         for value in schema.get("properties", {}).values():
             if isinstance(value, dict) and "const" in value:
-                schemas[value["const"]] = path
+                schemas[value["const"]] = (path, schema)
 
 for path in (ROOT / "examples").glob("*.json"):
     example = read(path)
@@ -36,6 +41,12 @@ for path in (ROOT / "examples").glob("*.json"):
     version = example.get("schemaVersion")
     if version not in schemas:
         errors.append(f"{path.relative_to(ROOT)}: no schema for {version}")
+    else:
+        _, schema = schemas[version]
+        validator = Draft202012Validator(schema, format_checker=FormatChecker())
+        for error in sorted(validator.iter_errors(example), key=lambda item: list(item.absolute_path)):
+            location = ".".join(str(part) for part in error.absolute_path) or "$"
+            errors.append(f"{path.relative_to(ROOT)}:{location}: {error.message}")
     if version == "sciphys.evidence-bundle.v0.1":
         node_ids = {node.get("id") for node in example.get("nodes", [])}
         for edge in example.get("edges", []):
@@ -50,4 +61,4 @@ if errors:
     for error in errors:
         print(f"- {error}")
     raise SystemExit(1)
-print(f"Validated {len(schemas)} schema identities and all examples.")
+print(f"Validated {len(schemas)} JSON Schemas and all examples.")

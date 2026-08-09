@@ -16,6 +16,14 @@ SciPhys Formats lets instruments, analysis tools, agents, notebooks, archives, a
 
 Examples under [`examples/`](examples/) are CI-checked for schema identity and referential integrity. Experimental schemas may change through RFCs; stable schemas follow the compatibility rules in [VERSIONING.md](VERSIONING.md).
 
+Validate every example against its full JSON Schema, including date-time and
+pattern formats:
+
+```bash
+python -m pip install -r requirements-dev.txt
+python scripts/validate.py
+```
+
 ## Design rules
 
 - Preserve original instrument files and hash them with SHA-256.

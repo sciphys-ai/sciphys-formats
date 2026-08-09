@@ -5,6 +5,7 @@ Open an issue or RFC before changing a shared field's meaning. A schema pull req
 Run:
 
 ```bash
+python -m pip install -r requirements-dev.txt
 python scripts/validate.py
 ```
 
