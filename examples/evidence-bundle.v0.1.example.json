@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "sciphys.evidence-bundle.v0.1",
+  "id": "evidence:public-zno-xrd-001",
+  "createdAt": "2026-08-10T00:00:00Z",
+  "nodes": [
+    { "id": "raw:zno.xy", "type": "raw-data", "label": "Synthetic ZnO peak list", "contentHash": "b318cb947a0fc8a07db64bb80e38462c7fdc2de713e55ed0d5ff97226d7830c1" },
+    { "id": "process:xrd-inspect", "type": "process", "label": "SciPhys XRD inspection", "metadata": { "implementation": "sciphys-os", "version": "0.2.0" } },
+    { "id": "result:phase-candidates", "type": "result", "label": "Ranked phase candidates" }
+  ],
+  "edges": [
+    { "from": "raw:zno.xy", "to": "process:xrd-inspect", "relation": "used" },
+    { "from": "process:xrd-inspect", "to": "result:phase-candidates", "relation": "generated" }
+  ],
+  "claims": [
+    { "id": "claim:consistent-zno", "text": "Observed peaks are consistent with wurtzite ZnO.", "kind": "interpretation", "evidenceRefs": ["result:phase-candidates"], "status": "draft" }
+  ],
+  "reviews": []
+}
