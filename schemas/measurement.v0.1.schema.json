@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.sciphys.org/measurement/v0.1.json",
+  "title": "SciPhys Measurement v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "sample", "instrument", "acquisition", "rawFiles"],
+  "properties": {
+    "schemaVersion": { "const": "sciphys.measurement.v0.1" },
+    "id": { "type": "string", "minLength": 1 },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "materialSystem": { "type": "string" },
+        "composition": { "type": "string" },
+        "preparationRef": { "type": "string" },
+        "extensions": { "type": "object" }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["technique"],
+      "properties": {
+        "technique": { "type": "string", "minLength": 1 },
+        "vendor": { "type": "string" },
+        "model": { "type": "string" },
+        "serialNumberHash": { "type": "string" },
+        "software": { "type": "string" },
+        "extensions": { "type": "object" }
+      }
+    },
+    "acquisition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startedAt", "parameters"],
+      "properties": {
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "operatorRole": { "type": "string" },
+        "parameters": { "type": "object" },
+        "environment": { "type": "object" }
+      }
+    },
+    "rawFiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "sha256", "mediaType"],
+        "properties": {
+          "name": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+          "mediaType": { "type": "string" },
+          "uri": { "type": "string" },
+          "byteSize": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "axes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/quantityDescriptor" }
+    },
+    "signals": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/quantityDescriptor" }
+    },
+    "extensions": { "type": "object" },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "privacy": { "enum": ["public", "anonymized", "restricted"] }
+      }
+    }
+  },
+  "$defs": {
+    "quantityDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "unit"],
+      "properties": {
+        "name": { "type": "string" },
+        "unit": { "type": "string" },
+        "dataRef": { "type": "string" },
+        "uncertaintyRef": { "type": "string" }
+      }
+    }
+  }
+}

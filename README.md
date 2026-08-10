@@ -1,48 +1,46 @@
 # SciPhys Formats
 
-Open schemas for AI-native experimental science data.
+[![Validate schemas](https://github.com/sciphys-ai/sciphys-formats/actions/workflows/validate.yml/badge.svg)](https://github.com/sciphys-ai/sciphys-formats/actions/workflows/validate.yml)
 
-SciPhys Formats defines a shared language for samples, instruments,
-measurements, analysis results, provenance, and expert feedback. The goal is to
-make raw experimental data searchable, auditable, and reusable across labs,
-notebooks, AI systems, and hosted workspaces.
+Versioned, vendor-neutral contracts for experimental measurements and scientific evidence.
 
-## Why It Matters
+SciPhys Formats lets instruments, analysis tools, agents, notebooks, archives, and hosted products exchange data without sharing an implementation. It complements established scientific formats: original bytes remain authoritative while SciPhys records portable metadata, provenance, results, claims, and review.
 
-AI for science needs more than files. It needs context:
+## Contracts
 
-- who measured the sample;
-- what project and material system the data belongs to;
-- how the sample was prepared;
-- which instrument and settings were used;
-- which analysis version produced the result;
-- what an expert accepted, rejected, or corrected.
+| Contract | Status | Purpose |
+|---|---|---|
+| [`sciphysdata.v0.schema.json`](schemas/sciphysdata.v0.schema.json) | legacy draft | Early measurement envelope; retained for compatibility |
+| [`measurement.v0.1.schema.json`](schemas/measurement.v0.1.schema.json) | experimental | Vendor-neutral sample, instrument, acquisition, and raw-file metadata |
+| [`evidence-bundle.v0.1.schema.json`](schemas/evidence-bundle.v0.1.schema.json) | experimental | Provenance graph, scientific claims, artifacts, and expert review |
 
-This repository is the public schema layer for that context.
+Examples under [`examples/`](examples/) are CI-checked for schema identity and referential integrity. Experimental schemas may change through RFCs; stable schemas follow the compatibility rules in [VERSIONING.md](VERSIONING.md).
 
-## Current Scope
+Validate every example against its full JSON Schema, including date-time and
+pattern formats:
 
-- `schemas/sciphysdata.v0.schema.json`: draft JSON Schema for experimental
-  measurements and expert feedback.
-- `examples/xrd-measurement.example.json`: minimal XRD measurement example.
+```bash
+python -m pip install -r requirements-dev.txt
+python scripts/validate.py
+```
 
-The schema is intentionally small in v0. It will expand as real parser,
-benchmark, and lab workflow cases demand it.
+## Design rules
 
-## Design Principles
+- Preserve original instrument files and hash them with SHA-256.
+- Keep acquisition metadata separate from analysis outputs.
+- Represent quantities with explicit values and units.
+- Separate observations, derived results, interpretations, and hypotheses.
+- Link every scientific claim to evidence nodes.
+- Record processes, parameters, implementations, versions, and review decisions.
+- Put unmapped vendor metadata in namespaced extensions instead of discarding it.
+- Never imply that a confidence number alone establishes scientific validity.
 
-- Evidence is a first-class object.
-- Provenance must travel with the result.
-- Expert feedback should be structured, not trapped in comments.
-- Public examples must not expose private lab data.
-- Schemas should be useful outside the hosted SciPhys product.
+## Ecosystem
 
-## Related Repositories
+- [sciphys-os](https://github.com/sciphys-ai/sciphys-os) implements the runtime and agent Skills.
+- [sciphys-bench](https://github.com/sciphys-ai/sciphys-bench) uses versioned contracts for evaluation artifacts.
+- [sciphys-recipes](https://github.com/sciphys-ai/sciphys-recipes) demonstrates end-to-end interoperable workflows.
 
-- [sciphys-os](https://github.com/sciphys-ai/sciphys-os): parsers and analysis primitives.
-- [sciphys-bench](https://github.com/sciphys-ai/sciphys-bench): benchmark specifications and public cases.
-- [sciphys-recipes](https://github.com/sciphys-ai/sciphys-recipes): reproducible workflows.
+Read [INTEROPERABILITY.md](INTEROPERABILITY.md) before proposing a mapping, and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting data examples.
 
-## License
-
-Apache-2.0.
+Code and schemas are Apache-2.0. Example data must declare compatible redistribution terms.

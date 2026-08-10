@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "sciphys.measurement.v0.1",
+  "id": "measurement:public-zno-xrd-001",
+  "sample": {
+    "id": "sample:public-zno-001",
+    "name": "Synthetic ZnO demonstration",
+    "materialSystem": "Zn-O",
+    "composition": "ZnO"
+  },
+  "instrument": {
+    "technique": "xrd",
+    "vendor": "synthetic",
+    "model": "regression-generator"
+  },
+  "acquisition": {
+    "startedAt": "2026-08-10T00:00:00Z",
+    "operatorRole": "synthetic-generator",
+    "parameters": {
+      "radiation": "Cu K-alpha",
+      "wavelength": { "value": 1.5406, "unit": "angstrom" }
+    }
+  },
+  "rawFiles": [
+    {
+      "name": "zno.xy",
+      "sha256": "b318cb947a0fc8a07db64bb80e38462c7fdc2de713e55ed0d5ff97226d7830c1",
+      "mediaType": "text/plain",
+      "byteSize": 106
+    }
+  ],
+  "axes": [{ "name": "twoTheta", "unit": "degree", "dataRef": "zno.xy#column=1" }],
+  "signals": [{ "name": "intensity", "unit": "arbitrary-unit", "dataRef": "zno.xy#column=2" }],
+  "provenance": {
+    "createdAt": "2026-08-10T00:00:00Z",
+    "createdBy": "sciphys-ai",
+    "privacy": "public"
+  }
+}
